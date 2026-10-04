@@ -51,8 +51,8 @@
   text-rendering: optimizeLegibility;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
-body { margin: 0; background: radial-gradient(circle at 12% 0%, #fff 0, var(--wash) 34%), var(--wash); color: var(--ink); }
+html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; overflow-x:hidden; overscroll-behavior-x: none; }
+body { margin: 0; overflow-x:hidden; overscroll-behavior-x: none; background: radial-gradient(circle at 12% 0%, #fff 0, var(--wash) 34%), var(--wash); color: var(--ink); }
 button, input { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; }
@@ -90,6 +90,7 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .gender-card .choice-check { position: absolute; top: 17px; right: 17px; border-color: #d8cdda; background: rgba(255,255,255,.94); }
 .quiz-illustration { display: grid; place-items: center; width: min(100%, 420px); aspect-ratio: 4 / 3; height: auto; margin: -8px auto 16px; overflow: hidden; border-radius: 13px; background: #fff; }
 .quiz-illustration img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.summary-mockup { aspect-ratio: 16 / 9; margin-top: 0; box-shadow: 0 12px 30px rgba(54, 24, 58, .10); }
 .choice-card { display: flex; align-items: center; gap: 13px; width: 100%; min-height: 62px; padding: 12px 14px; color: #211b23; text-align: left; border: 1.4px solid #e5dbe7; border-radius: 13px; background: rgba(255,255,255,.94); cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease; }
 .choice-card:hover { transform: translateY(-1px); border-color: #ba8cbe; }
 .choice-card.is-selected { border-color: var(--plum); background: #faf4fb; box-shadow: 0 0 0 3px rgba(111,22,119,.08), 0 8px 18px rgba(88,20,95,.07); transform: translateY(-1px); }
@@ -341,7 +342,8 @@ const MEDIA = {
   team: "https://files.manuscdn.com/user_upload_by_module/session_file/310419663029316629/gRbBgcrqHxfcNgOw.jpg",
   squat: "https://files.manuscdn.com/user_upload_by_module/session_file/310419663029316629/FwSjWTwgVbTKigpq.jpg",
   core: "https://files.manuscdn.com/user_upload_by_module/session_file/310419663029316629/HychbwkpXVWxfMRW.jpg",
-  plank: "https://files.manuscdn.com/user_upload_by_module/session_file/310419663029316629/xmddWkliyjNlOxUH.jpg"
+  plank: "https://files.manuscdn.com/user_upload_by_module/session_file/310419663029316629/xmddWkliyjNlOxUH.jpg",
+  mockup: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663990629044/XkxQnnNauihhknXl.JPG"
 };
 
 const CHECKOUT_URLS = {
@@ -546,7 +548,7 @@ function stepBody(step) {
     const experience = escapeHtml(state.answers.experience || "um começo possível");
     const focus = Array.isArray(state.answers.focus) ? state.answers.focus.join(", ") : "corpo todo";
     const profile = segmentCopy();
-    return `<div class="summary-panel"><div class="summary-symbol" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 5a19 19 0 1 0 19 19h-7a12 12 0 1 1-3.52-8.48L26.7 21.3H43V5l-4.9 4.9A18.94 18.94 0 0 0 24 5Z" fill="currentColor"/></svg></div><p class="summary-welcome">${name ? `${escapeHtml(name)}, ` : ""}seu perfil está pronto: <strong>${escapeHtml(profile.label)}</strong>.</p><p class="summary-copy">Você quer <strong>${goal.toLowerCase()}</strong>, mas hoje sente que <strong>${barrier.toLowerCase()}</strong>. Como você tem <strong>${experience.toLowerCase()}</strong> e consegue reservar <strong>${time.toLowerCase()}</strong>, a recomendação é começar com uma rotina simples e adaptável.</p><div class="summary-tags"><span>${escapeHtml(state.answers.place || "Onde for possível")}</span><span>${escapeHtml(focus.toLowerCase())}</span><span>${time}</span></div><p class="disclaimer">Este miniresultado usa apenas as respostas que você informou e fica salvo somente neste navegador. Não é avaliação médica ou nutricional.</p></div>`;
+    return `<figure class="quiz-illustration summary-mockup"><img src="${MEDIA.mockup}" alt="Mockup do Leanfit com guia, aplicativo, treinos, receitas e grupo VIP" loading="eager" decoding="async" /></figure><div class="summary-panel"><div class="summary-symbol" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 5a19 19 0 1 0 19 19h-7a12 12 0 1 1-3.52-8.48L26.7 21.3H43V5l-4.9 4.9A18.94 18.94 0 0 0 24 5Z" fill="currentColor"/></svg></div><p class="summary-welcome">${name ? `${escapeHtml(name)}, ` : ""}seu perfil está pronto: <strong>${escapeHtml(profile.label)}</strong>.</p><p class="summary-copy">Você quer <strong>${goal.toLowerCase()}</strong>, mas hoje sente que <strong>${barrier.toLowerCase()}</strong>. Como você tem <strong>${experience.toLowerCase()}</strong> e consegue reservar <strong>${time.toLowerCase()}</strong>, a recomendação é começar com uma rotina simples e adaptável.</p><div class="summary-tags"><span>${escapeHtml(state.answers.place || "Onde for possível")}</span><span>${escapeHtml(focus.toLowerCase())}</span><span>${time}</span></div><p class="disclaimer">Este miniresultado usa apenas as respostas que você informou e fica salvo somente neste navegador. Não é avaliação médica ou nutricional.</p></div>`;
   }
   return "";
 }
