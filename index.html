@@ -45,6 +45,16 @@ fbq('track', 'PageView');
 .guarantee-badge{display:block;width:min(65%,180px);height:auto;margin:0 auto 12px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.step-card.reveal{animation:none}}
 </style>
+<script>
+  window.__earlyStartQuiz = function(event){
+    if(event)event.preventDefault();
+    var intro=document.getElementById('inicio'),quiz=document.getElementById('quiz');
+    if(!intro||!quiz)return;
+    window.__quizStartedEarly=true;
+    intro.classList.add('hidden');
+    quiz.classList.remove('hidden');
+  };
+</script>
 </head>
 <body>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=4019600935398913&amp;ev=PageView&amp;noscript=1" alt=""></noscript>
@@ -53,7 +63,7 @@ fbq('track', 'PageView');
 <img class="hero-image" src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663992660014/DwuPafLAMNbkrdDb.webp" alt="Imagem antes e depois do Guia Coxa e Bumbum Sem Agachamento" loading="eager">
 <p class="notice"><span class="warn">⚠️ Atenção, devido ao alto volume de acessos,</span> esta <span class="em">oportunidade é disponibilizada gratuitamente apenas 1 vez por pessoa.</span></p>
 <p class="subnotice">Se você sair, perderá sua vez.</p>
-<button class="btn full" id="startQuiz" type="button">Obter Truque do Bumbum Agora <span aria-hidden="true">→</span></button>
+<button class="btn full" id="startQuiz" type="button" onclick="window.__earlyStartQuiz(event)">Obter Truque do Bumbum Agora <span aria-hidden="true">→</span></button>
 <div class="timer" id="timerTop" aria-live="polite">Acesso liberado pelos próximos: <span>00:58</span></div>
 </div></div></section>
 <section class="quiz-area wrap hidden" id="quiz" aria-live="polite">
@@ -85,7 +95,7 @@ const stages=[
  {after:19,title:'🔎 Conectando suas necessidades à solução ideal',items:['Impacto emocional medido','Urgência identificada','Comprometimento em análise'],image:'https://files.manuscdn.com/user_upload_by_module/session_file/310519663992660014/oqadGQWaSbtpIhkz.webp'}
 ];
 const VIDEO_URL='https://delivery.i-cdn.net/stream/vidoxa5dAeUvmaK/playlist.m3u8';
-	let current=0,answers=[],analysisTimer=null,diagnosisTimer=null,videoHls=null,quizStarted=false,answerLocked=false;
+	let current=0,answers=[],analysisTimer=null,diagnosisTimer=null,videoHls=null,quizStarted=window.__quizStartedEarly===true,answerLocked=false;
 const intro=document.getElementById('inicio'),quiz=document.getElementById('quiz'),card=document.getElementById('questionCard'),analysis=document.getElementById('analysis'),diagnosis=document.getElementById('diagnosis');
 function reveal(el){el.classList.remove('reveal');void el.offsetWidth;el.classList.add('reveal');}
 function showQuestion(){if(analysisTimer)clearInterval(analysisTimer);analysis.classList.add('hidden');card.classList.remove('hidden');reveal(card);const q=QUESTIONS[current];document.getElementById('questionText').textContent=q.q;document.getElementById('progressText').textContent=`${current+1} de ${QUESTIONS.length}`;const pct=current/QUESTIONS.length*100;document.getElementById('progressFill').style.width=pct+'%';document.querySelector('#quiz [role=progressbar]').setAttribute('aria-valuenow',current);document.getElementById('choices').replaceChildren(...q.options.map((text,i)=>{const b=document.createElement('button');b.type='button';b.className='choice';b.textContent=text;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>choose(i,b));return b}));document.getElementById('backBtn').style.visibility=current===0?'hidden':'visible';}
